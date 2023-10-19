@@ -31,8 +31,6 @@ def show_diary():
 
 @app.route('/diary', methods=['POST'])
 def save_diary():
-    # sample_receive = request.form['sample_give']
-    # print(sample_receive)
     title_receive = request.form.get('title_give')
     content_receive = request.form.get('content_give')
 
@@ -49,11 +47,14 @@ def save_diary():
     profilename = f'static/profile-{mytime}.{extension}'
     profile.save(profilename)
 
+    time = today.strftime('%Y.%m.%d')
+
     doc = {
         'file': filename,
         'profile': profilename,
         'title': title_receive,
-        'content': content_receive
+        'content': content_receive,
+        'time': time,
     }
     db.diary.insert_one(doc)
     return jsonify({'msg': 'POST request complete!'})
